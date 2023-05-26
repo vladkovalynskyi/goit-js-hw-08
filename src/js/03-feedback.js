@@ -8,6 +8,10 @@ const feedbackFormStateKey = 'feedback-form-state';
 
 feedbackForm.addEventListener('input', throttle(saveFormState, 500));
 
+
+window.addEventListener('load', loadFormState);
+
+
 feedbackForm.addEventListener('submit', handleSubmit);
 
 function saveFormState() {
@@ -17,6 +21,17 @@ function saveFormState() {
   };
 
   localStorage.setItem(feedbackFormStateKey, JSON.stringify(formState));
+}
+
+function loadFormState() {
+  const formStateJSON = localStorage.getItem(feedbackFormStateKey);
+
+  if (formStateJSON) {
+    const formState = JSON.parse(formStateJSON);
+
+    emailInput.value = formState.email || '';
+    messageInput.value = formState.message || '';
+  }
 }
 
 function handleSubmit(evt) {
